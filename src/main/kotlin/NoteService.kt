@@ -66,13 +66,12 @@ object NoteService {
     fun findComment(id: Int, noteId: Int): Comment? {
         var note: Note? = findNote(noteId)
         var commentToReturn: Comment? = null
-        if (note!=null)
-        {
-        for (index in note.comments.indices) {
-            if (id == note.comments[index].id) {
-                commentToReturn = note.comments[index]
+        if (note != null) {
+            for (index in note.comments.indices) {
+                if (id == note.comments[index].id) {
+                    commentToReturn = note.comments[index]
+                }
             }
-        }
         }
         return commentToReturn
     }
@@ -81,7 +80,7 @@ object NoteService {
         var commentIndex = findCommentIndex(id, note)
         if (commentIndex != null) {
             note.comments[commentIndex].editable = false
-            deletedComments+= note.comments[commentIndex]
+            deletedComments += note.comments[commentIndex]
             note.comments.removeAt(commentIndex)
         }
     }
@@ -89,14 +88,16 @@ object NoteService {
 
     fun restoreComment(id: Int, note: Note) {
         var commentToRestore: Comment? = null
-        for (index in deletedComments.indices){
-            if (id== deletedComments[index].id && note.id == deletedComments[index].noteId)
+        for (index in deletedComments.indices) {
+            if (id == deletedComments[index].id && note.id == deletedComments[index].noteId)
                 commentToRestore = deletedComments[index]
-            }
-
-        if (commentToRestore!=null)
-        note.comments.add(commentToRestore.id-1, commentToRestore)
         }
+
+        if (commentToRestore != null) {
+            commentToRestore.editable = false
+            note.comments.add(commentToRestore.id - 1, commentToRestore)
+        }
+    }
 
     fun getComments(note: Note): List<Comment> {
         var commentsOfNote = mutableListOf<Comment>()
